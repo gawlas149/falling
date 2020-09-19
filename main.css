@@ -1,0 +1,188 @@
+* {
+  padding: 0;
+  margin: 0;
+  user-select: none;
+}
+body {
+  overflow: hidden;
+  background-color: rgb(182, 134, 134);
+}
+#gameArea {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: black solid 2px;
+}
+#canvas {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: rgb(148, 97, 97);
+}
+#pointsCounter {
+  position: absolute;
+  z-index: 1;
+}
+#moneyCounter {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+}
+.hidden {
+  display: none !important;
+}
+#shopBackground {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(182, 79, 79);
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+#shopTop {
+  flex: 2;
+  display: flex;
+  border-bottom: black solid 2px;
+}
+.shopChoose {
+  height: 100%;
+  flex: 1;
+  background-color: rgb(175, 61, 61);
+  text-align: center;
+  border-right: 2px black solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.shopType {
+  flex: 14;
+  display: flex;
+  flex-direction: column;
+}
+
+#shopTopWaste {
+  flex: 2;
+  display: flex;
+  justify-content: flex-end;
+}
+#shopMoney {
+  width: 30%;
+  background-color: rgb(216, 41, 41);
+  border-left: 2px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.shopUpgrade {
+  flex: 2;
+  border-bottom: 2px solid black;
+  background-color: rgb(212, 72, 72);
+  display: flex;
+  z-index: 2;
+}
+
+#shopBottomWaste {
+  flex: 3;
+  height: 100%;
+  display: flex;
+}
+.upgradeName {
+  flex: 2;
+  border-right: 2px solid black;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.upgradePrice {
+  flex: 1;
+  border-right: 2px solid black;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.upgradeProgress {
+  flex: 3;
+}
+#startWaste {
+  position: relative;
+  flex: 7;
+}
+#resetProgressButton {
+  position: absolute;
+  border: 1px solid black;
+  border-right: 3px solid black;
+  border-bottom: 3px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  height: 70%;
+  width: 20%;
+  background-color: rgb(216, 81, 81);
+}
+#resetProgressButton:hover {
+  background-color: rgb(170, 81, 81);
+  cursor: pointer;
+}
+#startButton {
+  flex: 3;
+  background-color: rgb(216, 41, 41);
+  border: 1px solid black;
+  border-left: 3px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+#startButton:hover {
+  background-color: rgb(173, 21, 21);
+  cursor: pointer;
+}
+#loseScreen {
+  position: absolute;
+  z-index: 1;
+  opacity: 0.95;
+  width: 70%;
+  height: 50%;
+  left: 50%;
+  top: 25%;
+  transform: translateX(-50%);
+  background-color: rgb(58, 58, 58);
+  border: 2px black solid;
+  display: flex;
+  flex-direction: column;
+}
+#loseReward {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid black;
+}
+#loseBottom {
+  flex: 2;
+  display: flex;
+}
+#loseShop {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 2px solid black;
+}
+#loseShop:hover {
+  background-color: rgb(82, 73, 73);
+  cursor: pointer;
+}
+#loseReplay {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#loseReplay:hover {
+  background-color: rgb(82, 73, 73);
+  cursor: pointer;
+}

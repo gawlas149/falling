@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Falling</title>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <meta
+      charset="UTF-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+  </head>
+  <body>
+    <div id="gameArea">
+      <div id="game" class="">
+        <div id="pointsCounter">0P</div>
+        <div id="moneyCounter">0$</div>
+        <canvas id="canvas"></canvas>
+        <div id="loseScreen" class="hidden">
+          <div id="loseReward"></div>
+          <div id="loseBottom">
+            <div id="loseShop">Shop</div>
+            <div id="loseReplay">Replay</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="shopBackground" class="hidden">
+        <div id="shopTop">
+          <div class="shopChoose">General Upgrades</div>
+          <div class="shopChoose">Powers</div>
+          <div class="shopChoose" style="border: none;">Skins</div>
+        </div>
+        <div id="shopTopWaste">
+          <div id="shopMoney"><div>0$</div></div>
+        </div>
+
+        <div class="shopType">
+          <div class="shopUpgrade" style="border-top: 2px solid black;">
+            <div class="upgradeName">Ball Size</div>
+            <div class="upgradePrice">0$</div>
+            <div class="upgradeProgress"></div>
+          </div>
+          <div class="shopUpgrade">
+            <div class="upgradeName">Obstacle Gap Size</div>
+            <div class="upgradePrice">0$</div>
+            <div class="upgradeProgress"></div>
+          </div>
+          <div class="shopUpgrade">
+            <div class="upgradeName">Obstacle Speed</div>
+            <div class="upgradePrice">0$</div>
+            <div class="upgradeProgress"></div>
+          </div>
+          <div class="shopUpgrade">
+            <div class="upgradeName">Start with Points</div>
+            <div class="upgradePrice">0$</div>
+            <div class="upgradeProgress"></div>
+          </div>
+          <div class="shopUpgrade">
+            <div class="upgradeName">Get more Money</div>
+            <div class="upgradePrice">0$</div>
+            <div class="upgradeProgress"></div>
+          </div>
+        </div>
+        <div id="shopBottomWaste">
+          <div id="startWaste">
+            <div id="resetProgressButton">Reset</div>
+          </div>
+          <div id="startButton">Let's go!</div>
+        </div>
+      </div>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>
