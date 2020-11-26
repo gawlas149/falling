@@ -88,7 +88,8 @@ function resizeGame() {
 
   cW = canvas.width;
   cH = canvas.height;
-  player.radius = (0.04 - 0.005 * upgrades[0]) * cH;
+  player.radiusP=0.04 - 0.005 * upgrades[0]
+  player.radius = player.radiusP * cH;
   obstacleHeight = 0.08 * cH;
 
   player.x = player.xP * cW;
@@ -145,8 +146,10 @@ function updateDifficulty() {
 }
 
 let ticksSum = 0;
-let ticksObstacle = obstacleSpawnInterval;
-function tick(secondsPassed) {
+let ticksObstacle = obstacleSpawnInterval-10;
+let reverseMove=0
+let reverseMoveTicks=0
+function tick() {
   if (lose == 1) {
     return;
   }
@@ -160,8 +163,6 @@ function tick(secondsPassed) {
   clear();
   obstaclesMove();
   playerMove();
-
-  // console.log(secondsPassed);
 
   if (dif < 20 && points >= 0) {
     if (ticksSum % 25 == 0) {
@@ -194,6 +195,12 @@ function tick(secondsPassed) {
       dif += 1;
     }
   }
+
+  // powerUpy
+  reverseMoveTicks+=1
+  if (reverseMoveTicks==1000){
+    reverseMove=0
+  }
 }
 
 function clear() {
@@ -212,8 +219,10 @@ function playerMove() {
   player.xNext = player.x + player.vX * cW;
   player.yNext = player.y + player.vY * cH;
   collide = 0;
+  collisionPowerUps()
+
   for (let i = 0; i < obstacles.length; i++) {
-    let temp = collision(obstacles[i].y, obstacles[i].x, obstacles[i].w);
+    let temp = collisionObstacle(obstacles[i].y, obstacles[i].x, obstacles[i].w);
     if (temp == 1) {
       collide = 1;
       // console.log("gora");
@@ -245,7 +254,11 @@ function playerMove() {
     player.vX = -player.vX * bounceFactor;
   } else {
     if (keys[37] || keys[65] || leftMobile == 1) {
-      player.vX -= player.speedX;
+      if (reverseMove==0){
+        player.vX -= player.speedX;
+      } else{
+        player.vX += player.speedX;
+      }
     }
   }
   if (player.x >= cW - player.radius) {
@@ -254,7 +267,11 @@ function playerMove() {
     player.vX = -player.vX * bounceFactor;
   } else {
     if (keys[39] || keys[68] || rightMobile == 1) {
-      player.vX += player.speedX;
+      if (reverseMove==0){
+        player.vX += player.speedX;
+      } else{        
+        player.vX -= player.speedX;
+      }
     }
   }
 
@@ -290,23 +307,32 @@ function playerMove() {
   player.xP += player.vX;
   player.x = player.xP * cW;
 
-  drawCircle(player.x, player.y, "red");
+  drawCircle(player.x, player.y, player.radius, "red");
+  
 }
 
-function drawCircle(x, y, color) {
+function drawCircle(x, y, radius, color) {
   ctx.beginPath();
   ctx.fillStyle = color;
-  ctx.arc(x, y, player.radius, 0, 2 * Math.PI);
+  ctx.arc(x, y, radius, 0, 2 * Math.PI);
   ctx.fill();
   ctx.stroke();
 }
 
+function drawImage(img, x, y, width, height){
+  let image= new Image()
+  image.src=`images/${img}.png`
+  ctx.drawImage(image,x,y,width,height)
+}
+
 let obstaclesToDelete;
+let currentPowerUpInDrawing=0
 function obstaclesMove() {
-  obstaclesToDelete = [];
+  // deleteOstacles
+  obstacleToDelete = 0;
   for (let i = 0; i < obstacles.length; i++) {
     if (obstacles[i].yP < -obstacleHeight / cH) {
-      obstaclesToDelete.push(i);
+      obstacleToDelete=1;
       points += 1;
       pointsCounter.innerText = `${points}P`;
       //getMoney
@@ -331,9 +357,18 @@ function obstaclesMove() {
       moneyCounter.innerText = `${moneyRun}$`;
     }
   }
-  for (let i = 0; i < obstaclesToDelete.length; i++) {
-    obstacles.splice([obstaclesToDelete[i] - i], 1);
+
+  //delete poweruUps
+  if(obstacleToDelete==1){
+    if(obstacles[0].powerUp==1){
+      powerUps.shift()
+    }
+    obstacles.shift();
   }
+   
+  
+
+  currentPowerUpInDrawing=0
   for (let i = 0; i < obstacles.length; i++) {
     drawRect(-2, obstacles[i].y, obstacles[i].x + 2, obstacleHeight, "blue");
     drawRect(
@@ -345,6 +380,16 @@ function obstaclesMove() {
     );
     obstacles[i].yP -= obstacleSpeed;
     obstacles[i].y = obstacles[i].yP * cH;
+
+    //draw powerUps
+    if (obstacles[i].powerUp==1){
+      let x=powerUps[currentPowerUpInDrawing].left*cW
+      let y=obstacles[i].y+0.5*obstacleHeight
+      let r=powerUpSize*cH
+      drawCircle(x,y,r,powerUps[currentPowerUpInDrawing].color)
+      drawImage(powerUps[currentPowerUpInDrawing].type,x-r,y-r,2*r,2*r)
+      currentPowerUpInDrawing+=1
+    }
   }
 }
 
@@ -356,8 +401,7 @@ function drawRect(x, y, width, height, color) {
   ctx.stroke();
 }
 
-function collision(oY, oX, oW) {
-  //sprawdzanie wysokości
+function collisionObstacle(oY, oX, oW) {
   if (
     player.yNext + player.radius > oY &&
     player.yNext - player.radius < oY + obstacleHeight
@@ -397,6 +441,7 @@ function tickLoop(timeStamp) {
 }
 tickLoop(0);
 
+let powerUpChances=0.2
 function generateObstacle() {
   obstacles.push({
     yP: 1,
@@ -406,6 +451,14 @@ function generateObstacle() {
   obstacles[obstacles.length - 1].y = obstacles[obstacles.length - 1].yP * cH;
   obstacles[obstacles.length - 1].x = obstacles[obstacles.length - 1].xP * cW;
   obstacles[obstacles.length - 1].w = obstacles[obstacles.length - 1].wP * cW;
+
+  //generatePowerUps
+  if (Math.random()>powerUpChances){
+    obstacles[obstacles.length - 1].powerUp=0
+  } else {
+    obstacles[obstacles.length - 1].powerUp=1
+    generatePowerUp(obstacles[obstacles.length - 1].xP,obstacles[obstacles.length - 1].wP)
+  }
 }
 
 //sterowanie na telefonie
@@ -494,6 +547,7 @@ function gameStart() {
   moneyRun = 0;
   moneyCounter.innerText = `${moneyRun}$`;
   pointsCounter.innerText = `${points}P`;
+  powerUps=[]
 }
 
 const shopUpgrades = document.getElementsByClassName("shopUpgrade");
@@ -558,5 +612,91 @@ resetProgressButton.onclick = () => {
     shopPrices[i].innerText = upgradesPrice[i][upgrades[i]] + "$";
   }
 };
-//powerupy-(pojawiają się na klockach)czyszczenie planszy, spowolnienie klocków, kulka mniejsza, dziury rosną, mniejsze odbijanie-, poruszanie się klocków,
-//powerdowny-zmiana sterowania
+
+//powerUps
+let powerUpSize=0.04 //radius max 0.06 min 0.015
+
+let powerUps=[] //x, type, color
+//może jeszcze powerUpy na klockach????
+function generatePowerUp(obstacleLeft,obstacleWidth){
+  if(Math.random()>0.2){
+    powerUps.push({
+    left:  obstacleLeft+powerUpSize+(Math.random()*(obstacleWidth-2*powerUpSize)),
+    type: "clearObstacles",
+    color: "pink"
+    })
+  }else{
+    powerUps.push({
+    left:  obstacleLeft+powerUpSize+(Math.random()*(obstacleWidth-2*powerUpSize)),
+    type: "reverseKeys",
+    color: "red"
+    })
+  }
+}
+
+function collisionPowerUps(){
+  let currentPowerUp=0
+  for(let i = 0; i<obstacles.length;i++){
+    if (obstacles[i].powerUp==1){
+      pow=powerUps[currentPowerUp]
+      if (Math.sqrt((pow.left-player.xP)**2+(obstacles[i].yP+0.5*(obstacleHeight/cH)-player.yP)**2)<=player.radiusP+powerUpSize){ //sqrt((x2-x1)^2-(y2-y1)^2)<=R+r
+        //wykryto kolizję
+        if(pow.type=="clearObstacles"){
+          clearObstacles()
+          console.log(powerUps)
+        } else{
+          obstacles[i].powerUp=0
+          powerUps.splice(currentPowerUp, 1);
+          currentPowerUpInDrawing-=1
+            if(pow.type=="reverseKeys"){
+            reverseKeys()
+            }
+          }
+        }
+        else{
+        currentPowerUp+=1
+        }
+      }
+  }
+}
+
+function clearObstacles(){
+  //get money
+  for(let i = 0; i<obstacles.length;i++){ 
+    points += 1;
+    pointsCounter.innerText = `${points}P`;
+    let oMoney = 0;
+    if (points < 10) {
+      oMoney = 0.1 + (Math.random() * points) / 8;
+    } else if (points < 20) {
+      oMoney = 2 + (Math.random() * points) / 6;
+    } else if (points < 30) {
+        oMoney = 6 + (Math.random() * points) / 5;
+    } else if (points < 50) {
+        oMoney = 10 + (Math.random() * points) / 2;
+    } else if (points < 80) {
+        oMoney = 20 + Math.random() * points;
+    } else {
+        oMoney = 50 + Math.random() * points * 2;
+    }
+    oMoney = oMoney * (1 + upgrades[4] * 0.5);
+    oMoney = parseFloat(oMoney.toFixed(2));
+    moneyRun += oMoney;
+    
+  }
+  moneyRun = parseFloat(moneyRun.toFixed(2));
+  moneyCounter.innerText = `${moneyRun}$`;
+
+  // clear
+  powerUps=[]
+  obstacles=[]
+  ticksObstacle = obstacleSpawnInterval-10;
+}
+
+function reverseKeys(){
+  reverseMove=1
+  reverseMoveTicks=0
+}
+
+
+//powerupy-spowolnienie klocków, kulka mniejsza, dziury rosną, mniejsze odbijanie
