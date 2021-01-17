@@ -12,7 +12,18 @@
   </head>
   <body>
     <div id="gameArea">
-      <div id="game" class="">
+      <div id="startScreen" class="">
+        <div id="startText">
+          <div class="startWords">BE CRUSHED</div>
+          <div class="startWords">LIKE A TOMATO</div>
+          <div class="startWords">OR</div>
+          <div class="startWords">FALL,</div>
+          <div class="startWords" style="padding-bottom: 6%;">THE CHOICE IS YOURS</div>
+        </div>
+        <div id="startScreenButton"><div>FALL</div></div>
+      </div>
+
+      <div id="game" class="hidden">
         <div id="pointsCounter">0P</div>
         <div id="moneyCounter">0$</div>
         <canvas id="canvas"></canvas>
@@ -35,32 +46,63 @@
           <div id="shopMoney"><div>0$</div></div>
         </div>
 
-        <div class="shopType">
-          <div class="shopUpgrade" style="border-top: 2px solid black;">
-            <div class="upgradeName">Ball Size</div>
-            <div class="upgradePrice">0$</div>
-            <div class="upgradeProgress"></div>
+        <div id="shopType">
+          <div id="shopUpgrades" class="">
+            <div class="shopUpgrade" style="border-top: 2px solid black;">
+              <div class="upgradeName">Ball Size</div>
+              <div class="upgradePrice">0$</div>
+              <div class="upgradeProgressContainer"></div>
+            </div>
+            <div class="shopUpgrade">
+              <div class="upgradeName">Obstacle Gap Size</div>
+              <div class="upgradePrice">0$</div>
+              <div class="upgradeProgressContainer"></div>
+            </div>
+            <div class="shopUpgrade">
+              <div class="upgradeName">Obstacle Speed</div>
+              <div class="upgradePrice">0$</div>
+              <div class="upgradeProgressContainer"></div>
+            </div>
+            <div class="shopUpgrade">
+              <div class="upgradeName">Start with Points</div>
+              <div class="upgradePrice">0$</div>
+              <div class="upgradeProgressContainer"></div>
+            </div>
+            <div class="shopUpgrade">
+              <div class="upgradeName">Get more Money</div>
+              <div class="upgradePrice">0$</div>
+              <div class="upgradeProgressContainer"></div>
+            </div>
           </div>
-          <div class="shopUpgrade">
-            <div class="upgradeName">Obstacle Gap Size</div>
-            <div class="upgradePrice">0$</div>
-            <div class="upgradeProgress"></div>
-          </div>
-          <div class="shopUpgrade">
-            <div class="upgradeName">Obstacle Speed</div>
-            <div class="upgradePrice">0$</div>
-            <div class="upgradeProgress"></div>
-          </div>
-          <div class="shopUpgrade">
-            <div class="upgradeName">Start with Points</div>
-            <div class="upgradePrice">0$</div>
-            <div class="upgradeProgress"></div>
-          </div>
-          <div class="shopUpgrade">
-            <div class="upgradeName">Get more Money</div>
-            <div class="upgradePrice">0$</div>
-            <div class="upgradeProgress"></div>
-          </div>
+
+            <div id="shopPowers" class="hidden">
+              <div class="shopPower" style="border-top: 2px solid black;">
+                <div class="powerName">More powerUps</div>
+                <div class="powerPrice">0$</div>
+                <div class="powerProgressContainer"></div>
+              </div>
+              <div class="shopPower">
+                <div class="powerName">Bigger powerUps</div>
+                <div class="powerPrice">0$</div>
+                <div class="powerProgressContainer"></div>
+              </div>
+              <div class="shopPower">
+                <div class="powerName">Longer powerUps</div>
+                <div class="powerPrice">0$</div>
+                <div class="powerProgressContainer"></div>
+              </div>
+              <div class="shopPower">
+                <div class="powerName">Less powerDowns</div>
+                <div class="powerPrice">0$</div>
+                <div class="powerProgressContainer"></div>
+              </div>
+              <div class="shopPower">
+                <div class="powerName">Marcin-Prestige</div>
+                <div class="powerPrice">0$</div>
+                <div class="powerProgressContainer"></div>
+              </div>
+            </div>
+            <div id="shopSkins" class="hidden">hehe nie ma</div>
         </div>
         <div id="shopBottomWaste">
           <div id="startWaste">
